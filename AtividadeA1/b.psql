@@ -1,0 +1,5 @@
+CREATE OR REPLACE FUNCTION aumenta_salario_variavel (porcento int, id_maior int) RETURNS setof employee AS $$
+BEGIN
+    update employee set salary = salary * porcento where id_maior < employee.id;
+END; $$
+LANGUAGE 'plpgsql'; 
