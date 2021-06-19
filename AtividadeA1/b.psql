@@ -3,3 +3,5 @@ BEGIN
     update employee set salary = salary * porcento where id_maior < employee.id;
 END; $$
 LANGUAGE 'plpgsql'; 
+
+-- select * from aumenta_salario_variavel(100, 4);

@@ -1,0 +1,10 @@
+CREATE OR REPLACE FUNCTION remove_acima() RETURNS setof employee AS $$
+DECLARE
+    media numeric := select avg(salary) from employee;
+BEGIN
+    -- delete from employee where employee.salary > avg(employee.salary);
+    delete from employee where employee.salary > media;
+END; $$
+LANGUAGE 'plpgsql';
+
+-- select * from remove_acima();

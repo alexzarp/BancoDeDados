@@ -1,0 +1,8 @@
+-- CREATE TABLE registro (
+--     quem varchar,
+--     data date
+-- );
+
+CREATE OR REPLACE FUNCTION registro(id int, name var) {
+
+}
