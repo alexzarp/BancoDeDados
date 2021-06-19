@@ -1,0 +1,36 @@
+-- calcula_valor(operacao)
+
+-- CREATE OR REPLACE FUNCTION test(p int, n int)
+-- RETURNS setof users AS $$
+-- BEGIN
+--   IF p = 1 THEN
+--     return query SELECT * FROM users u where u.id=n;
+--   else
+--    UPDATE users  set salario=salario*1.1 where id=n;
+--    return query SELECT * FROM users u where u.id=n;
+--   END IF;
+--   RETURN;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+-- insert into users values (1, 'Maria', 5151.50), (2, 'Joao', 5454.40), (3, 'Joaninha', 4444.55);
+
+-- CREATE OR REPLACE FUNCTION calcula_valor(valor int) RETURNS void AS $$
+-- BEGIN
+--    if valor = 1 then
+--        UPDATE users SET salario = salario*1.10;
+--    else
+--       if valor =2 then
+--           UPDATE users SET salario = salario*0.90; 
+--       end if; 
+--    end if;   
+-- END;
+-- $$
+-- LANGUAGE 'plpgsql';
+
+-- select * from calcula_valor(3);
+
+-- CREATE OR REPLACE FUNCTION 
+
+-- CREATE TABLE employee (id int, name varchar(50), BirthYear int, salary float);
+insert into employee values (1, 'Alex', 2000, 5000.50), ;
