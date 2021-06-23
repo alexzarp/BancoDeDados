@@ -1,0 +1,23 @@
+-- 1 ) No exemplo 1-b, modifique a trigger para aumentar 10 % do salário bruto (devido a impostos) antes de adicionar o valor na tabela. 
+
+CREATE OR REPLACE FUNCTION emp_time() 
+RETURNS trigger AS $$
+    BEGIN
+        IF NEW.empname IS NULL THEN
+            RAISE EXCEPTION 'empname nao pode ser nulo';
+        END IF;
+        IF NEW.salary IS NULL THEN
+            RAISE EXCEPTION '% nao pode ter salario nulo';
+        END IF;
+        NEW.salary := salary*1.10;
+
+        NEW.last_date := current_date;
+        NEW.last_user := current_user;
+        RETURN NEW;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_time BEFORE INSERT OR UPDATE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE emp_time();
+
+insert into emp values (‘joao’, 1000);
