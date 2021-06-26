@@ -1,0 +1,26 @@
+-- 1- se o produto em estoque chegar ao valor 0 (não tem mais o produto) então o mesmo deve ser 
+-- removido das tabelas Product e Stock. A aplicação faz o controle para o caso de quantity=0. 
+
+CREATE OR REPLACE FUNCTION remove_produto() RETURNS trigger AS $$
+    BEGIN
+--      DELETE FROM m_productprice B USING m_product C WHERE B.m_product_id = C.m_product_id AND
+--      C.upc = '7094' AND                 
+--      B.m_pricelist_version_id='1000020';
+        delete from product p using stock s where s.quantity = 0;
+        -- delete from stock where quantity = 0;
+        RETURN NEW;
+    END
+$$ LANGUAGE plpgsql;
+
+-- DELETE s FROM spawnlist s INNER JOIN npc n ON s.npc_templateid = n.idTemplate 
+-- WHERE (n.type = "monster");
+
+-- delete p from product as p inner stock as s on p.eid = s.eid where s.quantity = 0;
+-- DROP TRIGGER se_dist_existe ON filmes;
+
+DROP TRIGGER IF EXISTS remove_produto ON stock;
+CREATE TRIGGER remove_produto AFTER UPDATE ON stock
+    FOR EACH ROW EXECUTE PROCEDURE remove_produto();
+
+-- update stock set quantity = 1568 where eid = 1;
+-- update stock set quantity = 0 where eid = 2;
