@@ -1,0 +1,11 @@
+drop database if exists atividade;
+create database atividade;
+
+\c atividade
+
+create table if not exists cliente (
+    id integer primary key,
+    nome varchar,
+    cpf integer,
+    logradouro varchar
+);
