@@ -3,3 +3,25 @@
 -- (logou no sistema- current_user), hora, eid (tabela Product). Note que a aplicação irá fazer o
 -- update. O trigger deve apenas monitorar e armazenar as informações requisitadas.
 
+CREATE TABLE IF NOT EXISTS controle (
+    user_ varchar, -- nome
+    eid integer, -- eid product
+    data_ timestamp -- data e hora   
+);
+
+CREATE OR REPLACE FUNCTION armazena_usuario() RETURNS trigger AS $$
+    DECLARE 
+        id_produto int;
+    BEGIN
+        select eid into id_produto from product where NEW.eid = product.eid;
+        insert into controle values ( current_user, id_produto, current_timestamp );
+        RAISE NOTICE 'O user % fez uma compra!', current_user;
+        RETURN NEW;
+    END
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS armazena_usuario ON stock; -- eu não compreendi direito aonde isso deve olhar, mas a única possibilidade é o estoque
+
+CREATE TRIGGER armazena_usuario AFTER UPDATE ON stock FOR EACH ROW EXECUTE PROCEDURE armazena_usuario();
+
+update stock set quantity = quantity - 1 where eid = 3;
