@@ -1,0 +1,10 @@
+drop database if exists log;
+create database log;
+
+\c log
+
+create table if not exists dados (
+    id integer primary key,
+    a integer,
+    b integer
+);
