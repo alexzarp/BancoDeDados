@@ -7,35 +7,24 @@ cur.execute("truncate table dados")
 # coluna | id | valor
 # animals.append('guinea pig')
 data = []
-# nesse momento para simplicar, desconsiderei que o id tivesse mais de 1 dígito
+# desconsiderei id com mais de 1 dígito, e dado com mais/menos de 2 dígitos na hora do carregamento 
 for i in range(True):
-    n = 1
-
-    number_complete = ""
-    number = 4
-    while(True):
-        if num_pattern(log[i][number]):
-            number_complete += log[i][number]
-        else:
-            break
-        number+=1
-
-    data.append([log[i][0], log[i][2], number_complete])
-
-    for n in range(True):
-        if(data[i][0] == log[n][0]):
-            data.append([log[n][0], log[n][2], number_complete])
-            continue
-        else:
-            data.append([log[n][0], log[n][2], number_complete])
-            break
-
-    if log[i][0] != log[i+1][0]:
+    number_complete = ''
+    if log[i] == '\n':
+        print('ola')
         break
-    # else:
-    #     break
+    number_complete = number_complete + log[i][4] + log[i][5]
+    data.append([log[i][0], log[i][2], number_complete])
+    reg = i
+    for reg in range(True):
+        reg+=1
+        if (log[reg][0] == log[i][0] and log[reg][2] == log[i][2]):
+            number_complete = number_complete + log[reg][4] + log[reg][5]
+            data.append([log[i][0], log[i][2], number_complete])
+
     
 print(data)
+# print(log)
 
 
 cur.close()
