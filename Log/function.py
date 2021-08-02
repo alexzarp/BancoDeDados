@@ -36,3 +36,18 @@ def num_pattern(num):
 #             break
 #         number+=1
 #     return num_complete
+
+def truncate_data(cur, conn):
+    cur.execute("truncate table dados")
+    i = 0
+    while (True):
+        dadoA = ''
+        dadoB = ''
+        dadoA = dadoA + log[i][4] + log[i][5]
+        dadoB = dadoB + log[i+2][4] + log[i+2][5]
+        cur.execute("insert into dados values (%s, %s, %s)", (log[i][2], dadoA, dadoB))
+        conn.commit()
+        if log[i+3] == '\n':
+            # print('tes')
+            break
+        i+=1
