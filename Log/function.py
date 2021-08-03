@@ -22,20 +22,21 @@ def close_database(conn):
     if conn is not None:
         conn.close()
 
-def num_pattern(num):
-   pattern = r"[0-9]"
-   return bool(re.match(pattern, num))
+def start_pattern(log):
+    pattern = r"^<start T[0-9]+>$"
+    return bool(re.match(pattern, log))
 
-# def num_complete(i):
-#     number_complete = ""
-#     number = 4
-#     while(True):
-#         if num_pattern(log[i][number]):
-#             number_complete += log[i][number]
-#         else:
-#             break
-#         number+=1
-#     return num_complete
+def transaction_pattern(log):
+    pattern = r"^<T[0-9]+,[0-9]+,[A-Z],[0-9]+>$"
+    return bool(re.match(pattern, log))
+
+def commit_pattern(log):
+    pattern = r"^<commit T[0-9]+>$"
+    return bool(re.match(pattern, log))
+
+def start_CKPT_pattern(log):
+    pattern = r"^<Start CKPT"
+    return bool(re.match(pattern, log))
 
 def truncate_data(cur, conn):
     cur.execute("truncate table dados")
