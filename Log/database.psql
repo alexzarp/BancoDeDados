@@ -5,6 +5,6 @@ create database log;
 
 create table if not exists dados (
     id integer primary key,
-    a integer,
-    b integer
+    A integer,
+    B integer
 );

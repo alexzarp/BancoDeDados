@@ -38,6 +38,10 @@ def start_CKPT_pattern(log):
     pattern = r"^<Start CKPT"
     return bool(re.match(pattern, log))
 
+def end_CKPT_pattern(log):
+    pattern = r"^<End CKPT>$"
+    return bool(re.match(pattern, log))
+
 def truncate_data(cur, conn):
     cur.execute("truncate table dados")
     i = 0
@@ -49,6 +53,5 @@ def truncate_data(cur, conn):
         cur.execute("insert into dados values (%s, %s, %s)", (log[i][2], dadoA, dadoB))
         conn.commit()
         if log[i+3] == '\n':
-            # print('tes')
             break
         i+=1
