@@ -2,10 +2,9 @@ from function import *
 
 conn = connect_database()
 redo = []
-try:
-    
 # conn.commit()
 # cur.close()
+try:
     i = 5
     save = i
     while(log[i] != '\n'): # tudo isso aqui (eu testei) pra achar o <start T3>
@@ -33,13 +32,13 @@ try:
             if log[save][6] == 'A':
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][1] != dataLog:
-                    cur.execute("update dados set A = %s where id = %s"), (dataLog, log[save][4])
+                    cur.execute("update dados set a = %s where id = %s"), (dataLog, log[save][4])
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)
             else: # B
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][2] != dataLog:
-                    cur.execute("update dados set B = %s where id = %s"), (dataLog, log[save][4])
+                    cur.execute("update dados set b = %s where id = %s"), (dataLog, log[save][4])
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)   
         
