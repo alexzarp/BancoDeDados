@@ -33,13 +33,13 @@ try:
             if log[save][6] == 'A':
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][1] != dataLog:
-                    cur.execute("update dados set b = %s where id = %s"), (dataLog, log[save][4])
+                    cur.execute("update dados set A = %s where id = %s"), (dataLog, log[save][4])
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)
             else: # B
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][2] != dataLog:
-                    cur.execute("update dados set b = %s where id = %s"), (dataLog, log[save][4])
+                    cur.execute("update dados set B = %s where id = %s"), (dataLog, log[save][4])
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)   
         
@@ -49,6 +49,7 @@ except psycopg2.DatabaseError as error:
     print(error)
     exit()
 
+print(redo)
 truncate_data(cur, conn)
 close_database(conn)
 
