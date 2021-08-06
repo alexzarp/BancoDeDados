@@ -6,7 +6,7 @@ redo = []
 # cur.close()
 try:
     i = 5
-    save = i
+    save = 0
     while(log[i] != '\n'): # tudo isso aqui (eu testei) pra achar o <start T3>
         if start_CKPT_pattern(log[i]):
             transaction = log[i][13]
@@ -32,15 +32,15 @@ try:
             if log[save][6] == 'A':
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][1] != dataLog:
-                    cur.execute("update dados set b = " + str(dataLog) + "where id =" + str(log[save][4]))
-                    # cur.execute("update dados set a = %s where id = %s"), (dataLog, log[save][4])
+                    cur.execute("update dados set a = " + str(dataLog) + "where id =" + str(log[save][4]))
+                    print("A tupla id =",log[save][4],"coluna a, foi atualizada para o dado:",str(dataLog))
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)
             else: # B
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][2] != dataLog:
                     cur.execute("update dados set b = " + str(dataLog) + "where id =" + str(log[save][4]))
-                    # cur.execute("update dados set b = %s where id = %s"), (dataLog, log[save][4])
+                    print("A tupla id =",log[save][4],"coluna b, foi atualizada para o dado:",str(dataLog))
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)   
         
