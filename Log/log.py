@@ -39,18 +39,41 @@ try:
             else: # B
                 dataLog = log[save][8] + log[save][9]
                 if rows[0][2] != dataLog:
-                    cur.execute("update dados set b = " + str(dataLog) + "where id ="+str(log[save][4]))
+                    cur.execute("update dados set b = " + str(dataLog) + "where id =" + str(log[save][4]))
                     # cur.execute("update dados set b = %s where id = %s"), (dataLog, log[save][4])
                     dataLog = log[save][1] + log[save][2]
                     redo.append(dataLog)   
         
+        elif commit_pattern(log[save]):
+            conn.commit()
+
         save+=1
 
+    # cur.close()
 except psycopg2.DatabaseError as error:
     print(error)
-    exit()
 
-print(redo)
+for i in range(len(log)):
+    if start_CKPT_pattern(log[i]):
+        index = log[i].find('(')
+        # print(log[i].find('trator'))
+        dataLog = log[i][index+1] + log[i][index+2]
+        for j in range(len(redo)):
+            if dataLog == redo[j]:
+                # print(dataLog, redo[j])
+                index+=3
+                print('Transação', redo[j] ,'realizou Redo')
+            else:
+                # print(dataLog, redo[j])
+                index+=3
+                print('Transação', redo[j] ,'não realizou Redo')
+            
+            dataLog = log[i][index+1] + log[i][index+2]
+
+            if (log[i][index] == ')'):
+                break
+        break
+
 truncate_data(cur, conn)
 close_database(conn)
 
