@@ -49,7 +49,7 @@ try:
 
         save+=1
 
-    # cur.close()
+    cur.close()
 except psycopg2.DatabaseError as error:
     print(error)
 
@@ -76,4 +76,3 @@ for i in range(len(log)):
 
 truncate_data(cur, conn)
 close_database(conn)
-

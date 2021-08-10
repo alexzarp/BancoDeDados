@@ -43,7 +43,9 @@ def end_CKPT_pattern(log):
     return bool(re.match(pattern, log))
 
 def truncate_data(cur, conn):
+    cur = conn.cursor()
     cur.execute("truncate table dados")
+    conn.commit()
     i = 0
     while (True):
         dadoA = ''
@@ -55,3 +57,4 @@ def truncate_data(cur, conn):
         if log[i+3] == '\n':
             break
         i+=1
+    cur.close()
