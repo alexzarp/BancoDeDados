@@ -1,11 +1,15 @@
 from function import *
-
+# Alex Sandro Zarpelon e Gustavo Costella Barbosa
 conn = connect_database()
 redo = []
 # conn.commit()
 # cur.close()
 try:
-    i = 5
+    i = 0
+    while(log[i][0] != '\n'):
+        i+=1
+    i+=1
+
     save = 0
     while(log[i] != '\n'): # tudo isso aqui (eu testei) pra achar o <start T3>
         if start_CKPT_pattern(log[i]):
@@ -21,10 +25,11 @@ try:
         i+=1
 
     while(log[save] != '\n'):
-        if start_pattern(log[save]):
-            cur = conn.cursor()
+        cur = conn.cursor()
+        # if start_pattern(log[save]):
+        #     cur = conn.cursor()
 
-        elif transaction_pattern(log[save]):
+        if transaction_pattern(log[save]):
             cur.execute("select * from dados where id = %s", (log[save][4]))
             rows = cur.fetchall()
             # print(rows)
@@ -49,22 +54,19 @@ try:
 
         save+=1
 
-    cur.close()
+    # cur.close()
 except psycopg2.DatabaseError as error:
     print(error)
 
 for i in range(len(log)):
     if start_CKPT_pattern(log[i]):
         index = log[i].find('(')
-        # print(log[i].find('trator'))
         dataLog = log[i][index+1] + log[i][index+2]
         for j in range(len(redo)):
             if dataLog == redo[j]:
-                # print(dataLog, redo[j])
                 index+=3
                 print('Transação', redo[j] ,'realizou Redo')
             else:
-                # print(dataLog, redo[j])
                 index+=3
                 print('Transação', redo[j] ,'não realizou Redo')
             

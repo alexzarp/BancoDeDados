@@ -42,19 +42,59 @@ def end_CKPT_pattern(log):
     pattern = r"^<End CKPT>$"
     return bool(re.match(pattern, log))
 
+def number_pattern(log):
+    pattern = r"[0-9]"
+    return bool(re.match(pattern, log))
+
+#a minha ideia era mais ou menos essa 
+def find_commit(log):   
+    commit_catch = [] #declara uma lista vazia pra pegar os commits
+    for i in range(len(log)):
+        found = log[i].find('Commit') #procura dentro do arquivo as referencias a commit e coloca dentro da variavel (não sei se precisa e também não sei como pegar exatamente a transação)
+        #precisa de um jeito de retornar o nome da transação, o find só retorna -1 caso ele ache a string
+        #provavelmente com o pattern é possivel
+        commit_catch.append(found) #insere os elementos achados na lista 
+        
+        if end_CKPT_pattern(log) == True: #não tenho certeza quanto a essa condição, pode-se pensar em outro ponto de parada, pq se tiver mais que um checkpoint já azedou
+            break
+
 def truncate_data(cur, conn):
     cur = conn.cursor()
     cur.execute("truncate table dados")
     conn.commit()
+    
     i = 0
-    while (True):
-        dadoA = ''
-        dadoB = ''
-        dadoA = dadoA + log[i][4] + log[i][5]
-        dadoB = dadoB + log[i+2][4] + log[i+2][5]
-        cur.execute("insert into dados values (%s, %s, %s)", (log[i][2], dadoA, dadoB))
-        conn.commit()
-        if log[i+3] == '\n':
-            break
+    while(log[i][0] != 'B'):
+        number = ''
+        data = []
+        if log[i][0] == 'A':
+            j = 4
+            while(log[i][j] != '\n'):
+                if number_pattern(log[i][j]):
+                    number = number + log[i][j]
+                j+=1
+            data.append(log[i][2])
+            data.append(number)
+            number = ''
+
+            k = 0
+            while(log[k][0] != '\n'):
+                if log[k][0] == 'B' and data[0] == log[k][2]:
+                    j = 4
+                    while(log[k][j] != '\n'):
+                        if number_pattern(log[k][j]):
+                            number = number + log[k][j]
+                        j+=1
+                    data.append(number)
+                    cur.execute("insert into dados values (%s, %s, %s)", (data[0], data[1], data[2]))
+                    conn.commit()
+                    break
+                    
+                
+                k+=1
         i+=1
+
     cur.close()
+
+# INSERT INTO films (code, title, did, date_prod, kind)
+#     VALUES ('T_601', 'Yojimbo', 106, DEFAULT, 'Drama');
