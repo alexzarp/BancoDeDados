@@ -1,0 +1,15 @@
+otimizado_plannig_time
+Média: 0.408
+Desvio padrão: 0.103
+
+otimizado_execution_time
+Média: 86.431
+Desvio padrão: 3.186
+
+notimizado_plannig_time
+Média: 0.45
+Desvio padrão: 0.105
+
+notimizado_execution_time
+Média: 85.245
+Desvio padrão: 2.073
